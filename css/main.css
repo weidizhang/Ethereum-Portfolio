@@ -1,0 +1,34 @@
+body
+{
+	margin-top: 60px;
+}
+
+.full-width
+{
+	width: 100%;
+}
+
+.font-bold
+{
+	font-weight: bold;
+}
+
+.in-profit
+{
+	color: green;
+}
+
+.in-loss
+{
+	color: red;
+}
+
+#stat-table th, #stat-table td
+{
+	width: 33.3%;
+}
+
+#data-table th, #data-table td
+{
+	width: 25%;
+}

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">		
+		<title>ETH Portfolio</title>
+		
+		<link rel="stylesheet" href="css/bootstrap.min.css" media="screen">
+		<link rel="stylesheet" href="css/main.css">
+		
+		<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+		<script src="js/jquery.csv.js"></script>
+		<script src="js/main.js"></script>
+	</head>
+	<body>
+		<div class="container">
+		
+			<div class="row">
+				<div class="alert alert-warning full-width text-center">
+					<h6>Value of 1 ETH</h6>
+					<h1>$<span id="eth-value"></span> USD</h1>
+				</div>
+			</div>
+		
+			<div class="row">
+				<table class="table table-striped table-hover table-bordered" id="stat-table">
+					<thead>
+						<tr>
+							<th></th>
+							<th>Amount</th>
+							<th>Currency</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>Holdings</td>
+							<td id="stat-held"></td>
+							<td>ETH</th>
+						</tr>
+						<tr>
+							<td>Cost</td>
+							<td id="stat-cost"></td>
+							<td>USD</td>
+						</tr>
+						<tr>
+							<td>Worth</td>
+							<td id="stat-worth"></td>
+							<td>USD</td>
+						</tr>
+						<tr class="font-bold">
+							<td>Profit / Loss</td>
+							<td id="stat-pl-usd"></td>
+							<td>USD</td>
+						</tr>
+						<tr class="font-bold">
+							<td>Profit / Loss</td>
+							<td id="stat-pl-percent"></td>
+							<td>%</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		
+			<div class="row">
+				<table class="table table-striped table-hover table-bordered" id="data-table">
+					<thead>
+						<tr>
+							<th>Date</th>
+							<th>Amount (ETH)</th>
+							<th>Cost Per ETH (USD)</th>
+							<th>Total Cost (USD)</th>
+						</tr>
+					</thead>
+					<tbody id="data-body">
+						
+					</tbody>
+				</table>
+			</div>
+			
+		</div>
+	</body>
+</html>

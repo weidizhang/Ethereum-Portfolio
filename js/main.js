@@ -46,7 +46,10 @@ function fillDataTable(buyData) {
 
 function fillStatTable() {
 	$("#stat-held").text(totalHeld.toFixed(8));
-	$("#stat-cost").text("$" + totalCost.toFixed(2));	
+	$("#stat-cost").text("$" + totalCost.toFixed(2));
+	
+	var avgCostPer = totalCost / totalHeld;
+	$("#stat-avg-cost").text("$" + avgCostPer.toFixed(2));
 }
 
 function updatePrice(currency) {

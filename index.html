@@ -9,6 +9,7 @@
 		
 		<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
 		<script src="js/jquery.csv.js"></script>
+		<script src="js/config.js"></script>
 		<script src="js/main.js"></script>
 	</head>
 	<body>
@@ -35,7 +36,12 @@
 							<td>Holdings</td>
 							<td id="stat-held"></td>
 							<td>ETH</th>
-						</tr>						
+						</tr>
+						<tr>
+							<td>Price Needed for <span id="desired-percent"></span>% Profit</td>
+							<td id="stat-desired-cost"></td>
+							<td>USD</td>
+						</tr>
 						<tr>
 							<td>Average Cost Per ETH</td>
 							<td id="stat-avg-cost"></td>

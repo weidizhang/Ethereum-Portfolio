@@ -49,7 +49,13 @@ function fillStatTable() {
 	$("#stat-cost").text("$" + totalCost.toFixed(2));
 	
 	var avgCostPer = totalCost / totalHeld;
-	$("#stat-avg-cost").text("$" + avgCostPer.toFixed(2));
+	$("#stat-avg-cost").text("$" + avgCostPer.toFixed(2));	
+	
+	var desiredPercent = config.desiredProfitPercent / 100;
+	var priceDesired = desiredPercent * avgCostPer + avgCostPer;
+	
+	$("#desired-percent").text(config.desiredProfitPercent);
+	$("#stat-desired-cost").text("$" + priceDesired.toFixed(2));
 }
 
 function updatePrice(currency) {

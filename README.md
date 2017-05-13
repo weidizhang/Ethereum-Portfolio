@@ -12,7 +12,8 @@ Uses coinbase API for price.
 ## Features
 
 * Displays various statistics including total holdings, price needed for desired % gain, average cost per ETH, cost, worth, profit/loss
-* Price and statistics update every 30 seconds while page is open
+* Chart to visualize profit/loss (no database required, compares against historical price data)
+* Price, statistics, and chart update every 30 seconds while page is open
 
 ## Usage
 

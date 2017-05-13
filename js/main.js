@@ -1,6 +1,10 @@
 var totalCost = 0;
 var totalHeld = 0;
 
+var dateObj = new Date();
+var today = dateObj.toISOString().substring(0, 10);
+var chartFirstLoad = true;
+
 $(document).ready(function() {
 	$.ajax({
 		url: "data.csv",
@@ -66,11 +70,15 @@ function updatePrice(currency) {
 		$("#eth-value").text(price);
 		
 		updateStatTable(price);
+		
+		if (chartFirstLoad) {
+			updateChart(price);
+		}
 	});
 }
 
-function updateStatTable(price) {
-	var worth = totalHeld * price;
+function updateStatTable(spotPrice) {
+	var worth = totalHeld * spotPrice;
 	var netPL = worth - totalCost;
 	var percentPL = netPL / totalCost * 100;
 	
@@ -91,4 +99,56 @@ function updateStatTable(price) {
 	
 	$("#stat-pl-usd").attr("class", textClass);
 	$("#stat-pl-percent").attr("class", textClass);
+}
+
+function updateChart(spotPrice) {
+	var apiUrl = "https://www.coinbase.com/api/v2/prices/ETH-USD/historic?period=month";
+	
+	$.getJSON(apiUrl, function(data) {
+		var dayPriceData = [];
+		var prices = data.data.prices;
+		
+		$.each(prices, function(i, priceData) {
+			if (priceData.time.indexOf("T00:00:00Z") > -1) {
+				var date = priceData.time.substring(0, "YYYY-MM-DD".length);
+				var price = priceData.price;
+				
+				var worth = price * totalHeld;
+				var profitLoss = worth - totalCost;
+				
+				if (today != date) {
+					dayPriceData.push({
+						date: date,
+						profitLoss: profitLoss.toFixed(2)
+					});
+				}
+			}
+		});
+		
+		dayPriceData.reverse();
+		
+		var currentWorth = spotPrice * totalHeld;
+		var currentProfitLoss = currentWorth - totalCost;
+		
+		dayPriceData.push({
+			date: today,
+			profitLoss: currentProfitLoss.toFixed(2)
+		});
+		
+		console.log(dayPriceData); // debug
+		drawChart(dayPriceData);
+	});
+	
+	chartFirstLoad = false;
+}
+
+function drawChart(data) {
+	new Morris.Line({
+		element: "chart-pl",
+		data: data,
+		xkey: "date",
+		ykeys: ["profitLoss"],
+		labels: ["Unrealized P/L (USD)"],
+		xLabels: "day"
+	});
 }

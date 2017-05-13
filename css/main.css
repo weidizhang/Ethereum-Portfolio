@@ -32,3 +32,8 @@ body
 {
 	width: 25%;
 }
+
+#chart-pl
+{
+	height: 300px;
+}

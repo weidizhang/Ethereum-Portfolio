@@ -7,6 +7,8 @@ var today = dateObj.toISOString().substring(0, 10);
 var dayPriceData = [];
 var chartFirstLoad = true;
 
+var rowWidth = 0;
+
 $(document).ready(function() {
 	$.ajax({
 		url: "data.csv",
@@ -19,9 +21,24 @@ $(document).ready(function() {
 		}
 	});
 	
+	makeChartAutoResize();
+	
 	updatePrice();
 	setInterval(updatePrice, 30000);
 });
+
+function makeChartAutoResize() {
+	var $statTable = $("#stat-table");
+	rowWidth = $statTable.width();
+	
+	$(window).resize(function() {
+		if (!chartFirstLoad && ($statTable.width() != rowWidth)) {
+			drawChart();
+			
+			rowWidth = $statTable.width();
+		}
+	});
+}
 
 function fillDataTable(buyData) {
 	var $tableBody = $("#data-body");

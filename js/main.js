@@ -124,7 +124,7 @@ function updateStatTable(spotPrice) {
 }
 
 function updateHistoricalPrices(spotPrice) {
-	var apiUrl = "https://www.coinbase.com/api/v2/prices/ETH-USD/historic?period=month";
+	var apiUrl = "https://www.coinbase.com/api/v2/prices/ETH-USD/historic?period=" + config.chartTimeFrame;
 	
 	$.getJSON(apiUrl, function(data) {		
 		var prices = data.data.prices;

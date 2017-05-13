@@ -24,6 +24,8 @@ Uses coinbase API for price.
 
 * jquery: https://jquery.com/
 * jquery-csv: https://github.com/evanplaice/jquery-csv
+* raphael: http://dmitrybaranovskiy.github.io/raphael/
+* morris.js: http://morrisjs.github.io/morris.js/
 
 ## License
 

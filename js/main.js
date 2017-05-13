@@ -3,6 +3,8 @@ var totalHeld = 0;
 
 var dateObj = new Date();
 var today = dateObj.toISOString().substring(0, 10);
+
+var dayPriceData = [];
 var chartFirstLoad = true;
 
 $(document).ready(function() {
@@ -72,7 +74,10 @@ function updatePrice(currency) {
 		updateStatTable(price);
 		
 		if (chartFirstLoad) {
-			updateChart(price);
+			updateHistoricalPrices(price);
+		}
+		else {
+			updateChartData(price);
 		}
 	});
 }
@@ -101,11 +106,10 @@ function updateStatTable(spotPrice) {
 	$("#stat-pl-percent").attr("class", textClass);
 }
 
-function updateChart(spotPrice) {
+function updateHistoricalPrices(spotPrice) {
 	var apiUrl = "https://www.coinbase.com/api/v2/prices/ETH-USD/historic?period=month";
 	
-	$.getJSON(apiUrl, function(data) {
-		var dayPriceData = [];
+	$.getJSON(apiUrl, function(data) {		
 		var prices = data.data.prices;
 		
 		$.each(prices, function(i, priceData) {
@@ -126,26 +130,34 @@ function updateChart(spotPrice) {
 		});
 		
 		dayPriceData.reverse();
-		
-		var currentWorth = spotPrice * totalHeld;
-		var currentProfitLoss = currentWorth - totalCost;
-		
 		dayPriceData.push({
-			date: today,
-			profitLoss: currentProfitLoss.toFixed(2)
+			date: today
 		});
 		
-		console.log(dayPriceData); // debug
-		drawChart(dayPriceData);
+		updateChartData(spotPrice);
 	});
 	
 	chartFirstLoad = false;
 }
 
-function drawChart(data) {
+function updateChartData(spotPrice) {
+	var lastPriceData = dayPriceData.pop();
+	
+	var currentWorth = spotPrice * totalHeld;
+	var currentProfitLoss = currentWorth - totalCost;
+	
+	lastPriceData.profitLoss = currentProfitLoss.toFixed(2);	
+	dayPriceData.push(lastPriceData);
+	
+	drawChart();
+}
+
+function drawChart() {
+	$("#chart-pl").empty();
+	
 	new Morris.Line({
 		element: "chart-pl",
-		data: data,
+		data: dayPriceData,
 		xkey: "date",
 		ykeys: ["profitLoss"],
 		labels: ["Unrealized P/L (USD)"],

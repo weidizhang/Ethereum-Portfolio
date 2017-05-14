@@ -127,10 +127,22 @@ function updateHistoricalPrices(spotPrice) {
 	var apiUrl = "https://www.coinbase.com/api/v2/prices/ETH-USD/historic?period=" + config.chartTimeFrame;
 	
 	$.getJSON(apiUrl, function(data) {		
+		var rawData = JSON.stringify(data);
+		var firstHour = "";
+		
+		for (var hour = 0; hour < 10; hour++) {
+			var hourString = "T0" + hour + ":00:00Z";
+			
+			if (rawData.indexOf(hourString) > -1) {
+				firstHour = hourString;
+				break;
+			}
+		}
+		
 		var prices = data.data.prices;
 		
 		$.each(prices, function(i, priceData) {
-			if (priceData.time.indexOf("T00:00:00Z") > -1) {
+			if (priceData.time.indexOf(firstHour) > -1) {
 				var date = priceData.time.substring(0, "YYYY-MM-DD".length);
 				var price = priceData.price;
 				

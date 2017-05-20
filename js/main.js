@@ -57,11 +57,13 @@ function fillDataTable(buyData) {
 		totalHeld += parseFloat(txData.amount);
 		
 		$tableBody.append(
-			"<tr>" +
+			"<tr class=\"data-row\">" +
 				"<td>" + txData.date + "</td>" +
-				"<td>" + txData.amount + "</td>" +
+				"<td class=\"tx-amount\">" + txData.amount + "</td>" +
 				"<td>" + txData.costPerETH + "</td>" +
-				"<td>" + cost + "</td>" +
+				"<td class=\"tx-cost\">" + cost + "</td>" +
+				"<td class=\"tx-worth\"></td>" +
+				"<td class=\"tx-pl\"></td>" +
 			"</tr>"
 		);
 	});
@@ -89,6 +91,7 @@ function updatePrice(currency) {
 		$("#eth-value").text(price);
 		
 		updateStatTable(price);
+		updateDataTable(price);
 		
 		if (chartFirstLoad) {
 			updateHistoricalPrices(price);
@@ -121,6 +124,35 @@ function updateStatTable(spotPrice) {
 	
 	$("#stat-pl-usd").attr("class", textClass);
 	$("#stat-pl-percent").attr("class", textClass);
+}
+
+function updateDataTable(spotPrice) {
+	$(".data-row").each(function(i, element) {
+		var $tx = $(element);
+		
+		var amount = parseFloat($tx.children(".tx-amount").text());
+		var cost = parseFloat($tx.children(".tx-cost").text().substring(1));
+		
+		var worth = spotPrice * amount;
+		$tx.children(".tx-worth").text("$" + worth.toFixed(2));
+		
+		var txPL = worth - cost;
+		var txPercentPL = txPL / cost * 100;
+		
+		var profitIndicator = "+";
+		var textClass = "in-profit";
+		if (txPL < 0) {
+			profitIndicator = "-";
+			textClass = "in-loss";
+			
+			txPL *= -1;
+			txPercentPL *= -1;
+		}
+		
+		$tx.children(".tx-pl").removeClass("in-profit in-loss");
+		$tx.children(".tx-pl").addClass(textClass);
+		$tx.children(".tx-pl").text(profitIndicator + "$" + txPL.toFixed(2) + " (" + profitIndicator + txPercentPL.toFixed(2) + "%)");
+	});
 }
 
 function updateHistoricalPrices(spotPrice) {

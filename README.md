@@ -17,7 +17,7 @@ Uses coinbase API for price.
 
 ## Usage
 
-1. Rename data.example.csv to data.csv, input purchase data accordingly using your favorite spreadsheet application
+1. Rename data.example.csv to data.csv, input purchase data accordingly using your favorite spreadsheet application with dates in yyyy-mm-dd format
 2. Edit js/config.js to change desired profit percentage and chart time frame
 
 ## Libraries Used

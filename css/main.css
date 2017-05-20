@@ -1,6 +1,6 @@
 body
 {
-	margin-top: 60px;
+	margin-top: 20px;
 }
 
 .full-width
@@ -30,7 +30,7 @@ body
 
 #data-table th, #data-table td
 {
-	width: 25%;
+	width: 16.67%;
 }
 
 #chart-pl

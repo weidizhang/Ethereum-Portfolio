@@ -71,15 +71,15 @@ function fixMobilePortraitMode() {
 	var bodyZoom = 1;
 
 	mobileZoomer = setInterval(function() {
-		if (($("body").get(0).scrollWidth > $(window).width()) && bodyZoom >= 0.25) {
-			bodyZoom -= 0.15;
+		if (($("#data-table").width() > $("#stat-table").width()) && bodyZoom >= 0.3) {
+			bodyZoom -= 0.1;
 			$("body").css("zoom", bodyZoom);
 		}
 		else {
 			clearInterval(mobileZoomer);
 			drawChart();
 		}
-	}, 1);
+	}, 2);
 }
 
 function createHeldTimeline(buyData) {
@@ -295,7 +295,7 @@ function updateChartData(spotPrice) {
 
 function drawChart() {
 	$("#loading-spinner").hide();
-	
+
 	$("#chart-pl").empty();
 	$("#chart-pl").show();
 	

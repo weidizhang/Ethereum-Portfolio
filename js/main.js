@@ -27,7 +27,7 @@ $(document).ready(function() {
 	makeChartAutoResize();
 	
 	updatePrice();
-	setInterval(updatePrice, 30000);
+	setInterval(updatePrice, config.refreshInterval * 1000);
 });
 
 function makeChartAutoResize() {

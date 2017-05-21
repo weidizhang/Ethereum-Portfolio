@@ -13,12 +13,16 @@ Uses coinbase API for price.
 
 * Displays various statistics including total holdings, price needed for desired % gain, average cost per ETH, cost, worth, profit/loss
 * Chart to visualize profit/loss (no database required, compares against historical price data)
-* Price, statistics, and chart update every 30 seconds while page is open
+* Price, statistics, and chart update every x seconds while page is open
 
 ## Usage
 
 1. Rename data.example.csv to data.csv, input purchase data accordingly using your favorite spreadsheet application with dates in yyyy-mm-dd format
-2. Edit js/config.js to change desired profit percentage and chart time frame
+2. Edit js/config.js to change desired profit percentage, chart time frame, and refersh interval (in seconds)
+
+## Modifying
+
+The main code is located in [main.js](https://github.com/weidizhang/Ethereum-Portfolio/blob/master/js/main.js)
 
 ## Libraries Used
 

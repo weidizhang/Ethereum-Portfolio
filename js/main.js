@@ -1,5 +1,6 @@
 var totalCost = 0;
 var totalHeld = 0;
+var heldTimeline = {};
 
 var dateObj = new Date();
 var today = dateObj.toISOString().substring(0, 10);
@@ -18,6 +19,8 @@ $(document).ready(function() {
 			
 			fillDataTable(parsedBuyData);
 			fillStatTable();
+
+			createHeldTimeline(parsedBuyData);
 		}
 	});
 	
@@ -40,6 +43,24 @@ function makeChartAutoResize() {
 	});
 }
 
+function createHeldTimeline(buyData) {
+	var amountCumulative = 0;
+	var costCumulative = 0;
+
+	buyData.forEach(function(txData) {
+		var date = txData.date + "T00:00:00Z";
+		var timestamp = (new Date(date)).getTime() / 1000;
+
+		amountCumulative += parseFloat(txData.amount);
+		costCumulative += (txData.amount * txData.costPerETH);
+
+		heldTimeline[timestamp] = {
+			amount: amountCumulative,
+			cost: costCumulative
+		};
+	});
+}
+
 function fillDataTable(buyData) {
 	var $tableBody = $("#data-body");
 	
@@ -51,7 +72,7 @@ function fillDataTable(buyData) {
 			
 			cost = "$" + cost.toFixed(2);
 			
-			txData.costPerETH = "$" + parseFloat(txData.costPerETH).toFixed(2);
+			var costPerETH = "$" + parseFloat(txData.costPerETH).toFixed(2);
 		}
 		
 		totalHeld += parseFloat(txData.amount);
@@ -60,7 +81,7 @@ function fillDataTable(buyData) {
 			"<tr class=\"data-row\">" +
 				"<td>" + txData.date + "</td>" +
 				"<td class=\"tx-amount\">" + txData.amount + "</td>" +
-				"<td>" + txData.costPerETH + "</td>" +
+				"<td>" + costPerETH + "</td>" +
 				"<td class=\"tx-cost\">" + cost + "</td>" +
 				"<td class=\"tx-worth\"></td>" +
 				"<td class=\"tx-pl\"></td>" +

@@ -11,6 +11,7 @@ var dateObj = new Date();
 var today = dateObj.toISOString().substring(0, 10);
 
 var dayPriceData = [];
+var localLoadChecker;
 var chartFirstLoad = true;
 
 var rowWidth = 0;
@@ -19,18 +20,36 @@ var mobileZoomer;
 var inLandscape = window.matchMedia("(orientation: landscape)").matches;
 
 $(document).ready(function() {
-	$.ajax({
-		url: "data.csv",
-		dataType: "text",
-		success: function(data) {
-			var parsedBuyData = $.csv.toObjects(data);
-			
-			fillDataTable(parsedBuyData);
-			fillStatTable();
+	if (!config.useJsonInsteadOfCSV) {
+		$.ajax({
+			url: "data.csv",
+			dataType: "text",
+			success: function(data) {
+				var parsedBuyData = $.csv.toObjects(data);
+				
+				fillDataTable(parsedBuyData);
+				fillStatTable();
 
-			createHeldTimeline(parsedBuyData);
-		}
-	});
+				createHeldTimeline(parsedBuyData);
+			}
+		});
+	}
+	else {
+		var loadBuyData = $("<script></script>").attr("src", "data.js");
+		var scriptElement = $("script")[0];
+		scriptElement.parentNode.insertBefore(loadBuyData[0], scriptElement);
+
+		localLoadChecker = setInterval(function() {
+			if (typeof(buyData) !== "undefined") {
+				clearInterval(localLoadChecker);
+				
+				fillDataTable(buyData);
+				fillStatTable();
+				
+				createHeldTimeline(buyData);
+			}
+		}, 50);
+	}
 	
 	makeChartAutoResize();
 	

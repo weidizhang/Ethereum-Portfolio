@@ -16,6 +16,7 @@ var chartFirstLoad = true;
 var rowWidth = 0;
 
 var mobileZoomer;
+var inLandscape = window.matchMedia("(orientation: landscape)").matches;
 
 $(document).ready(function() {
 	$.ajax({
@@ -49,19 +50,34 @@ function makeChartAutoResize() {
 			
 			rowWidth = $statTable.width();
 		}
+
+		detectOrientation();
 	});
+}
+
+function detectOrientation() {
+	currentLandscape = window.matchMedia("(orientation: landscape)").matches;
+
+	if (!inLandscape && currentLandscape) {
+		$("body").css("zoom", 1);
+	}
+	else if (inLandscape && !currentLandscape) {
+		fixMobilePortraitMode();
+	}
+	inLandscape = currentLandscape;
 }
 
 function fixMobilePortraitMode() {
 	var bodyZoom = 1;
 
 	mobileZoomer = setInterval(function() {
-		if ($("body").get(0).scrollWidth > $(window).width()) {
+		if (($("body").get(0).scrollWidth > $(window).width()) && bodyZoom >= 0.25) {
 			bodyZoom -= 0.15;
 			$("body").css("zoom", bodyZoom);
 		}
 		else {
 			clearInterval(mobileZoomer);
+			drawChart();
 		}
 	}, 1);
 }

@@ -1,6 +1,11 @@
 var totalCost = 0;
 var totalHeld = 0;
-var heldTimeline = {};
+var heldTimeline = {
+	0: {
+		amount: 0,
+		cost : 0
+	}
+};
 
 var dateObj = new Date();
 var today = dateObj.toISOString().substring(0, 10);
@@ -176,6 +181,20 @@ function updateDataTable(spotPrice) {
 	});
 }
 
+function getPortfolioAtTime(timestamp) {
+	var timeBelow;
+
+	$.each(heldTimeline, function(key, value) {
+		var holdTime = parseInt(key);
+
+		if (timestamp >= holdTime) {
+			timeBelow = key;
+		}
+	});
+
+	return heldTimeline[timeBelow];
+}
+
 function updateHistoricalPrices(spotPrice) {
 	var apiUrl = "https://www.coinbase.com/api/v2/prices/ETH-USD/historic?period=" + config.chartTimeFrame;
 	
@@ -199,8 +218,14 @@ function updateHistoricalPrices(spotPrice) {
 				var date = priceData.time.substring(0, "YYYY-MM-DD".length);
 				var price = priceData.price;
 				
-				var worth = price * totalHeld;
-				var profitLoss = worth - totalCost;
+				var timestamp = (new Date(date + "T00:00:00Z")).getTime() / 1000;
+				
+				var portfolioAtTime = getPortfolioAtTime(timestamp);
+				var totalHeldAtTime = portfolioAtTime.amount;
+				var totalCostAtTime = portfolioAtTime.cost;
+
+				var worth = price * totalHeldAtTime;
+				var profitLoss = worth - totalCostAtTime;
 				
 				if (today != date) {
 					dayPriceData.push({

@@ -15,6 +15,8 @@ var chartFirstLoad = true;
 
 var rowWidth = 0;
 
+var mobileZoomer;
+
 $(document).ready(function() {
 	$.ajax({
 		url: "data.csv",
@@ -33,6 +35,8 @@ $(document).ready(function() {
 	
 	updatePrice();
 	setInterval(updatePrice, config.refreshInterval * 1000);
+
+	fixMobilePortraitMode();
 });
 
 function makeChartAutoResize() {
@@ -46,6 +50,20 @@ function makeChartAutoResize() {
 			rowWidth = $statTable.width();
 		}
 	});
+}
+
+function fixMobilePortraitMode() {
+	var bodyZoom = 1;
+
+	mobileZoomer = setInterval(function() {
+		if ($("body").get(0).scrollWidth > $(window).width()) {
+			bodyZoom -= 0.15;
+			$("body").css("zoom", bodyZoom);
+		}
+		else {
+			clearInterval(mobileZoomer);
+		}
+	}, 1);
 }
 
 function createHeldTimeline(buyData) {

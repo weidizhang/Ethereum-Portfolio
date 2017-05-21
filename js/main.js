@@ -268,6 +268,7 @@ function drawChart() {
 		xkey: "date",
 		ykeys: ["profitLoss"],
 		labels: ["Unrealized P/L (USD)"],
-		xLabels: "day"
+		xLabels: "day",
+		hideHover: true
 	});
 }

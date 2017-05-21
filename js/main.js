@@ -278,7 +278,10 @@ function updateChartData(spotPrice) {
 }
 
 function drawChart() {
+	$("#loading-spinner").hide();
+	
 	$("#chart-pl").empty();
+	$("#chart-pl").show();
 	
 	new Morris.Line({
 		element: "chart-pl",
